@@ -1,5 +1,7 @@
 package com.hendisantika.hris.springboothrissample1.dto;
 
+import lombok.Data;
+
 /**
  * Created by IntelliJ IDEA.
  * Project : springboot-hris-sample1
@@ -9,6 +11,7 @@ package com.hendisantika.hris.springboothrissample1.dto;
  * Date: 2019-04-21
  * Time: 18:22
  */
+@Data
 public class DepartmentDTO implements Comparable<DepartmentDTO> {
     private String deptName;
     private Long managerId;
