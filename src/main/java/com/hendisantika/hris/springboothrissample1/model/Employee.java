@@ -1,5 +1,7 @@
 package com.hendisantika.hris.springboothrissample1.model;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -15,6 +17,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "EMPLOYEE")
+@Data
 public class Employee {
 
     @Id
@@ -47,4 +50,12 @@ public class Employee {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "JOB_ID")
     private Job job;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MANAGER_ID")
+    private Employee manager;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "DEPARTMENT_ID")
+    private Department department;
 }
