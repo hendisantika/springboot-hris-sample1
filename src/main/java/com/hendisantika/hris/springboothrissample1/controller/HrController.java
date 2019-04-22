@@ -173,4 +173,10 @@ public class HrController {
         return "update";
     }
 
+
+    @ModelAttribute("employee")
+    public EmployeeDTO getEmpDto() {
+        return new EmployeeDTO();
+    }
+
 }
