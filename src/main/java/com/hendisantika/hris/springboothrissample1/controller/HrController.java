@@ -1,5 +1,6 @@
 package com.hendisantika.hris.springboothrissample1.controller;
 
+import com.hendisantika.hris.springboothrissample1.dto.UserDTO;
 import com.hendisantika.hris.springboothrissample1.dto.UserSessionBean;
 import com.hendisantika.hris.springboothrissample1.service.DepartmentService;
 import com.hendisantika.hris.springboothrissample1.service.EmployeeService;
@@ -7,7 +8,11 @@ import com.hendisantika.hris.springboothrissample1.service.MiscService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.text.ParseException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -38,5 +43,19 @@ public class HrController {
     @RequestMapping(value = "/login")
     String login(Model model) {
         return "login";
+    }
+
+    @RequestMapping("/checklogin")
+    String checkLogin(@ModelAttribute("user") UserDTO current, BindingResult b, Model model) throws ParseException {
+        //try to return a user dto object given the password and username
+        UserDTO newDTO = UserService.getUser(current.getUsername(), current.getPassword());
+        if (newDTO != null) {
+            this.currentUser.setUsername(current.getUsername());
+            this.currentUser.setPassword(current.getPassword());
+            return "redirect:/datatable-test"; //table
+        } else {
+            return "login";
+        }
+
     }
 }
