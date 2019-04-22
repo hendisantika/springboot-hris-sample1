@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+
+<link href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" rel="stylesheet"/>
+
+<link media="screen" rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.6/css/bootstrap.min.css}"/>
+
+<link href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" rel="stylesheet"></link>
+
+<script th:src="@{/webjars/jquery/2.2.1/jquery.min.js}"
+        type="text/javascript"></script>
+
+<script th:src="@{/webjars/datatables/1.10.11/js/jquery.dataTables.min.js}" type="text/javascript"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "ajax": {
+                'url': '/getAll',
+                'dataSrc': ''
+            },
+            "columns": [
+                {"data": "firstName"},
+                {"data": "lastName"},
+                {"data": "jobTitle"},
+                {"data": "departmentID"},
+                {"data": "updateLink"},
+                {"data": "deleteLink"}
+            ]
+        });
+    });
+</script>
+
+<body>
+
+<h2>TABLE OF EMPLOYEES</h2>
+<div style="text-align:right"><a class="btn btn-success" th:href="@{/create-new}">Create New Employee</a>
+    <a class="btn btn-danger" th:href="@{/logout}">Logout</a>
+</div>
+<br/>
+
+<table class="container" id="example">
+    <thead>
+    <tr>
+        <td>First Name</td>
+        <td>Last Name</td>
+        <td>Job Title</td>
+        <td>Department ID</td>
+        <td>Update</td>
+        <td>Delete</td>
+    </tr>
+    </thead>
+</table>
+</body>
+
+</html>
