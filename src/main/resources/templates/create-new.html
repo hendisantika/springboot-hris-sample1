@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Hello Spring Boot!</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <!-- import bootstrap -->
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.6/css/bootstrap.min.css"
+          media="screen"
+          rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.6/css/bootstrap.min.css}"/>
+
+    <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet"/>
+    <link href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css" rel="stylesheet"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.2.1/jquery.min.js"
+            th:src="@{/webjars/jquery/2.2.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/datatables/1.10.11/js/jquery.dataTables.min.js}"></script>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+
+    <script>
+        $(function () {
+            $('#submit').on('click', function () {
+                validateForm();
+            });
+        });
+    </script>
+
+    <script>
+        function validateForm() {
+            //make sure first name and last name are less than 23 characters long
+            if ($('#fn').val().length > 22) {
+                alert("First name should be less than 23 characters");
+            }
+            if ($('$ln').val().length > 22) {
+                alert("Last name should be less than 23 characters");
+            }
+            alert('Submit new user?');
+            $('#form').submit();
+        }
+    </script>
+
+</head>
+
+<body>
+<form autocomplete="off" id="form" method="post" th:action="@{/create}" th:object="${employee}">
+
+    <h1>New Employee Form</h1>
+    <div class="col-xs-6">
+        <label for="fn"> First Name </label>: <input class="form-control" id="fn" placeholder="First Name"
+                                                     th:field="*{firstName}" type="text"/>
+
+        <div class="form-group">
+            <label for="ln"> Last Name </label>: <input class="form-control" id="ln" placeholder="Last Name"
+                                                        th:field="*{lastName}" type="text"/>
+        </div>
+
+        <div class="form-group">
+            <label for="phone"> Phone </label>:
+            <input class="form-control" id="phone" placeholder="Phone Number" th:field="*{phoneNumber}" type="text"/>
+        </div>
+
+        <div class="form-group">
+            <label for="salary"> Salary </label>:
+            <input class="form-control" id="salary" placeholder="Enter Salary" th:field="*{salary}" type="number"/>
+        </div>
+
+        <p> Department <select name="Department" th:field="*{departmentID}">
+            <option th:each="department : ${departments}" th:text="${department.deptName}"
+                    th:value="${department.DepartmentID}"/>
+        </select>
+        </p>
+
+        <p> Job Title <select name="Job Title" th:field="*{jobID}">
+            <option th:each="job : ${jobs}" th:text="${job.JobTitle}" th:value="${job.jobID}"/>
+        </select>
+        </p>
+
+        <br/>
+        <br/>
+        <div align="right">
+            <a class="btn btn-danger" th:href="@{/logout}"><span class="glyphicon glyphicon-log-out"></span>Logout</a>
+        </div>
+
+    </div>
+    <button class="btn btn-success" id="submit" value="Submit">Submit</button>
+    <button class="btn btn-primary" id="reset" value="Reset">Reset</button>
+
+</form>
+</body>
+
+</html>
