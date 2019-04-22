@@ -63,4 +63,9 @@ public class HrController {
     public UserDTO getUserDto() {
         return new UserDTO();
     }
+
+    @RequestMapping("/")
+    String index(Model model) {
+        return "redirect:/datatable-test";
+    }
 }
