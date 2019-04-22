@@ -206,4 +206,11 @@ public class HrController {
         toSave.setSalary(emp.getSalary());
         this.employeeService.saveOrUpdate(toSave);
     }
+
+
+    @RequestMapping("/delete")
+    String delete(@RequestParam("id") Long ID) {
+        this.employeeService.deleteEmployee(ID);
+        return "redirect:/datatable-test";
+    }
 }
