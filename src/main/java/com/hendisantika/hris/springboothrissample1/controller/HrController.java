@@ -58,4 +58,9 @@ public class HrController {
         }
 
     }
+
+    @ModelAttribute("user")
+    public UserDTO getUserDto() {
+        return new UserDTO();
+    }
 }
