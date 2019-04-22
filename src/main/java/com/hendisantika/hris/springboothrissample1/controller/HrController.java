@@ -2,9 +2,7 @@ package com.hendisantika.hris.springboothrissample1.controller;
 
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
-import com.hendisantika.hris.springboothrissample1.dto.EmployeeDTO;
-import com.hendisantika.hris.springboothrissample1.dto.UserDTO;
-import com.hendisantika.hris.springboothrissample1.dto.UserSessionBean;
+import com.hendisantika.hris.springboothrissample1.dto.*;
 import com.hendisantika.hris.springboothrissample1.model.Employee;
 import com.hendisantika.hris.springboothrissample1.service.DepartmentService;
 import com.hendisantika.hris.springboothrissample1.service.EmployeeService;
@@ -104,6 +102,16 @@ public class HrController {
 
         String jsonString = new Gson().toJson(list);
         return jsonString;
+    }
+
+    @RequestMapping("/create-new")
+    String create(Model model) {
+        //add jobs, and departments
+        List<JobDTO> j = misc.getJobs();
+        List<DepartmentDTO> d = deptServ.getDepartments();
+        model.addAttribute("jobs", j);
+        model.addAttribute("departments", d);
+        return "create-new";
     }
 
 }
