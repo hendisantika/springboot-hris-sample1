@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.hendisantika.hris.springboothrissample1.dto.*;
 import com.hendisantika.hris.springboothrissample1.model.Employee;
+import com.hendisantika.hris.springboothrissample1.model.Job;
 import com.hendisantika.hris.springboothrissample1.service.DepartmentService;
 import com.hendisantika.hris.springboothrissample1.service.EmployeeService;
 import com.hendisantika.hris.springboothrissample1.service.MiscService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -117,6 +119,33 @@ public class HrController {
     @ModelAttribute("employee")
     public EmployeeDTO initEmployee() {
         return new EmployeeDTO();
+    }
+
+    //after user enters info about new employee, data transferred here to be created
+    //@ModelAttribute(employee) = th:object=${employee}
+    @RequestMapping("/create")
+    String createNew(@ModelAttribute("employee") EmployeeDTO employee, BindingResult bindingResult, Model model) throws ParseException {
+
+        Employee toSave = new Employee();
+        Job j = new Job();
+        JobDTO dto = misc.getJobDTOByID(employee.getJobId());
+
+        j.setJobId(employee.getJobId());
+        j.setJobTitle(employee.getJobTitle());
+        j.setMaxSalary(dto.getMaxSalary());
+        j.setMinSalary(dto.getMinSalary());
+
+        toSave.setEmail("uzumaki_naruto@konohagakure.com");
+        toSave.setHireDate(new Date());
+        toSave.setFirstName(employee.getFirstName());
+        toSave.setLastName(employee.getLastName());
+        toSave.setJob(j);
+        toSave.setSalary(employee.getSalary());
+        toSave.setDepartment(deptServ.getOne(employee.getDepartmentId()));
+        toSave.setPhoneNumber(employee.getPhoneNumber());
+
+        this.employeeService.saveOrUpdate(toSave);
+        return "redirect:/datatable-test";
     }
 
 }
