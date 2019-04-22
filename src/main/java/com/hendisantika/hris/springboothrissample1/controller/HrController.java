@@ -1,7 +1,11 @@
 package com.hendisantika.hris.springboothrissample1.controller;
 
+import com.google.common.collect.Lists;
+import com.google.gson.Gson;
+import com.hendisantika.hris.springboothrissample1.dto.EmployeeDTO;
 import com.hendisantika.hris.springboothrissample1.dto.UserDTO;
 import com.hendisantika.hris.springboothrissample1.dto.UserSessionBean;
+import com.hendisantika.hris.springboothrissample1.model.Employee;
 import com.hendisantika.hris.springboothrissample1.service.DepartmentService;
 import com.hendisantika.hris.springboothrissample1.service.EmployeeService;
 import com.hendisantika.hris.springboothrissample1.service.MiscService;
@@ -11,8 +15,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.ParseException;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -73,4 +79,31 @@ public class HrController {
     String read(Model model) {
         return "datatable-test";
     }
+
+    @RequestMapping("/getAll")
+    @ResponseBody
+    public String getAllEmployees() {
+        List<EmployeeDTO> list = Lists.newArrayList();
+        for (Employee e : employeeService.getAll()) {
+            EmployeeDTO edto = new EmployeeDTO();
+            if (e.getDepartment() != null) {
+                edto.setDepartmentId(e.getDepartment().getDepartmentId());
+            } else {
+                edto.setDepartmentId((long) 000);
+            }
+            edto.setFirstName(e.getFirstName());
+            edto.setLastName(e.getLastName());
+            edto.setJobTitle(e.getJob().getJobTitle());
+            edto.setId(e.getEmployeeId());
+            edto.setDeleteLink("<a href='/delete?id=" + edto.getId() + "' "
+                    + "class='btn btn-danger'>Delete</a>");
+            edto.setUpdateLink("<a href='/update?id=" + edto.getId() + "' "
+                    + "class='btn btn-success'>Update</a>");
+            list.add(edto);
+        }
+
+        String jsonString = new Gson().toJson(list);
+        return jsonString;
+    }
+
 }

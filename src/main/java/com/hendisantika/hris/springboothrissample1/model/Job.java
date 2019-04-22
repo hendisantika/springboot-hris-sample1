@@ -1,5 +1,7 @@
 package com.hendisantika.hris.springboothrissample1.model;
 
+import lombok.Data;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -17,6 +19,7 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name = "JOBS")
+@Data
 public class Job {
     @Id
     @Column(name = "JOB_ID")
