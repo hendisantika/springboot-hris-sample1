@@ -213,4 +213,12 @@ public class HrController {
         this.employeeService.deleteEmployee(ID);
         return "redirect:/datatable-test";
     }
+
+    @RequestMapping("/logout")
+    String logout() {
+        this.currentUser.setPassword(null);
+        this.currentUser.setId(null);
+        this.currentUser.setUsername(null);
+        return "redirect:/login";
+    }
 }
