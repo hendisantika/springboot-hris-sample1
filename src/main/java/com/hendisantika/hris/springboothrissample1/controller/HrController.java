@@ -6,6 +6,8 @@ import com.hendisantika.hris.springboothrissample1.service.EmployeeService;
 import com.hendisantika.hris.springboothrissample1.service.MiscService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * Created by IntelliJ IDEA.
@@ -32,4 +34,9 @@ public class HrController {
 
     @Autowired
     private UserSessionBean currentUser;
+
+    @RequestMapping(value = "/login")
+    String login(Model model) {
+        return "login";
+    }
 }
