@@ -68,4 +68,9 @@ public class HrController {
     String index(Model model) {
         return "redirect:/datatable-test";
     }
+
+    @RequestMapping("/datatable-test")
+    String read(Model model) {
+        return "datatable-test";
+    }
 }
