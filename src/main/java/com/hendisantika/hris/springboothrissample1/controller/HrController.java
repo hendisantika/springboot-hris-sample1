@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.ParseException;
@@ -146,6 +147,30 @@ public class HrController {
 
         this.employeeService.saveOrUpdate(toSave);
         return "redirect:/datatable-test";
+    }
+
+    @RequestMapping("/update")
+    String update(@RequestParam("id") Long empId, Model model) throws ParseException {
+        Employee current = this.employeeService.getbyID(empId);
+        EmployeeDTO emp = new EmployeeDTO();
+        //populate fields
+        emp.setId(current.getEmployeeId());
+        emp.setFirstName(current.getFirstName());
+        emp.setLastName(current.getLastName());
+        emp.setPhoneNumber(current.getPhoneNumber());
+        emp.setSalary(current.getSalary());
+        emp.setDepartmentId(current.getDepartment().getDepartmentId());
+        emp.setHireDate(current.getHireDate());
+        emp.setJobTitle(current.getJob().getJobTitle());
+        emp.setJobId(current.getJob().getJobId());
+        emp.setEmail(current.getEmail());
+
+        List<JobDTO> j = misc.getJobs();
+        List<DepartmentDTO> d = deptServ.getDepartments();
+        model.addAttribute("jobs", j);
+        model.addAttribute("departments", d);
+        model.addAttribute("employee", emp);
+        return "update";
     }
 
 }
