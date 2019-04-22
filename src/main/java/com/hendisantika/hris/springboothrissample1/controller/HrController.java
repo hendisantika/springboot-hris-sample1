@@ -114,4 +114,9 @@ public class HrController {
         return "create-new";
     }
 
+    @ModelAttribute("employee")
+    public EmployeeDTO initEmployee() {
+        return new EmployeeDTO();
+    }
+
 }
