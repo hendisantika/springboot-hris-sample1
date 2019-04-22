@@ -179,4 +179,31 @@ public class HrController {
         return new EmployeeDTO();
     }
 
+
+    @RequestMapping("/update-save")
+    String updateSave(@ModelAttribute("employee") EmployeeDTO dto, BindingResult b, Model model) throws ParseException {
+        createAndSave(dto);
+        return "datatable-test";
+    }
+
+    private void createAndSave(EmployeeDTO emp) throws ParseException {
+        //any fields that weren't changed will be same as the one in storage
+        Employee toSave = this.employeeService.getbyID(emp.getId());
+        //create job from job dto
+        Job j = new Job();
+        JobDTO setFrom = this.misc.getJobDTOByID(emp.getJobId());
+        j.setJobId(setFrom.getJobId());
+        j.setJobTitle(setFrom.getJobTitle());
+        j.setMaxSalary(setFrom.getMaxSalary());
+        j.setMinSalary(setFrom.getMinSalary());
+
+        //create the new employee
+        toSave.setFirstName(emp.getFirstName());
+        toSave.setLastName(emp.getLastName());
+        toSave.setPhoneNumber(emp.getPhoneNumber());
+        toSave.setJob(j);
+        toSave.setDepartment(this.deptServ.getOne(emp.getDepartmentId()));
+        toSave.setSalary(emp.getSalary());
+        this.employeeService.saveOrUpdate(toSave);
+    }
 }
