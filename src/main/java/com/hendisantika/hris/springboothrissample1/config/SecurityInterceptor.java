@@ -1,13 +1,12 @@
 package com.hendisantika.hris.springboothrissample1.config;
 
 import com.hendisantika.hris.springboothrissample1.dto.UserSessionBean;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  * Time: 18:20
  */
 @Component
-public class SecurityInterceptor extends HandlerInterceptorAdapter {
+public class SecurityInterceptor implements HandlerInterceptor {
 
     @Autowired
     private UserSessionBean usb;
