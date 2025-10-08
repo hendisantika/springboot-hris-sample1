@@ -217,6 +217,30 @@ public class HrController {
         return "redirect:/employees";
     }
 
+    @GetMapping("/jobs")
+    String jobsList(Model model) {
+        return "jobs";
+    }
+
+    @GetMapping("/api/jobs")
+    @ResponseBody
+    public String getAllJobs() {
+        List<JobDTO> jobs = misc.getJobs();
+        return new Gson().toJson(jobs);
+    }
+
+    @GetMapping("/departments")
+    String departmentsList(Model model) {
+        return "departments";
+    }
+
+    @GetMapping("/api/departments")
+    @ResponseBody
+    public String getAllDepartments() {
+        List<DepartmentDTO> departments = deptServ.getDepartments();
+        return new Gson().toJson(departments);
+    }
+
     @GetMapping("/logout")
     String logout() {
         this.currentUser.setPassword(null);
