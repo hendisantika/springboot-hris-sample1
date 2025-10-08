@@ -317,7 +317,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="/datatable-test">
+                    <a class="nav-link active" href="/employees">
                         <i class="fas fa-th-large me-1"></i>Dashboard
                     </a>
                 </li>
@@ -437,7 +437,7 @@
         // Initialize DataTable
         var table = $('#example').DataTable({
             "ajax": {
-                'url': '/getAll',
+                'url': '/api/employees',
                 'dataSrc': function (data) {
                     // Update stats
                     $('#total-employees').text(data.length);
@@ -459,7 +459,7 @@
                 {"data": "firstName"},
                 {"data": "lastName"},
                 {"data": "jobTitle"},
-                {"data": "departmentID"},
+                {"data": "departmentId"},
                 {
                     "data": null,
                     "render": function (data, type, row) {
