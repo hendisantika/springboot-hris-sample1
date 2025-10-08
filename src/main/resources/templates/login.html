@@ -1,52 +1,307 @@
-<html xmlns:th="http://www.thymeleaf.org">
-
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no"
-          name="viewport"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title>Login - HRIS System</title>
 
-    <link
-            href="http://cdn.jsdelivr.net/webjars/bootstrap/4.3.1/css/bootstrap.min.css"
-            media="screen"
-            rel="stylesheet"
-            th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <link href="../../css/core.css" rel="stylesheet" th:href="@{/css/core.css}"/>
-    <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet"/>
-    <link href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css" rel="stylesheet"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <script src="http://cdn.jsdelivr.net/webjars/jquery/3.3.1/jquery.min.js"
-            th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
-    <script th:src="@{/webjars/datatables/1.10.11/js/jquery.dataTables.min.js}"></script>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+        .login-container {
+            max-width: 450px;
+            width: 100%;
+        }
 
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease-out;
+        }
 
-    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
+        .login-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .login-header i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .login-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .login-header p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .login-body {
+            padding: 40px 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+            z-index: 10;
+        }
+
+        .form-control {
+            padding: 12px 15px 12px 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            height: 50px;
+        }
+
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            outline: none;
+        }
+
+        .form-control::placeholder {
+            color: #aaa;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .form-check-label {
+            color: #666;
+        }
+
+        .forgot-password {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 25px 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+            background: #e0e0e0;
+        }
+
+        .divider span {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0 15px;
+            position: relative;
+            color: #999;
+            font-size: 13px;
+        }
+
+        .demo-credentials {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 13px;
+        }
+
+        .demo-credentials strong {
+            color: #667eea;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .demo-credentials p {
+            margin: 4px 0;
+            color: #666;
+        }
+
+        .demo-credentials code {
+            background: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #764ba2;
+            font-weight: 600;
+        }
+    </style>
 </head>
 
 <body>
-<form method="post" th:action="@{/checklogin}" th:object="${user}">
-    <h1>Login Page</h1>
-    <div class="col-xs-6">
-
-        <label for="username">Username: </label>
-        <input class="form-control" id="username" placeholder="Username" th:field="*{username}" type="text"/>
-
-        <br/>
-
-        <div class="form-group">
-            <label for="password">Password: </label>
-            <input class="form-control" id="password" placeholder="Password" th:field="*{password}" type="password"/>
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <i class="fas fa-users"></i>
+            <h1>HRIS System</h1>
+            <p>Human Resource Information System</p>
         </div>
 
-        <br/><br/>
-        <button class="btn btn-default" type="submit">Login</button>
+        <div class="login-body">
+            <form method="post" th:action="@{/checklogin}" th:object="${user}">
+                <div class="form-group">
+                    <label class="form-label" for="username">Username</label>
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input autocomplete="username"
+                               class="form-control"
+                               id="username"
+                               placeholder="Enter your username"
+                               required
+                               th:field="*{username}"
+                               type="text">
+                    </div>
+                </div>
 
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input autocomplete="current-password"
+                               class="form-control"
+                               id="password"
+                               placeholder="Enter your password"
+                               required
+                               th:field="*{password}"
+                               type="password">
+                    </div>
+                </div>
+
+                <div class="remember-forgot">
+                    <div class="form-check">
+                        <input class="form-check-input" id="rememberMe" type="checkbox">
+                        <label class="form-check-label" for="rememberMe">
+                            Remember me
+                        </label>
+                    </div>
+                    <a class="forgot-password" href="#">Forgot password?</a>
+                </div>
+
+                <button class="btn-login" type="submit">
+                    <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                </button>
+            </form>
+
+            <div class="divider">
+                <span>Demo Credentials</span>
+            </div>
+
+            <div class="demo-credentials">
+                <strong><i class="fas fa-info-circle me-1"></i>Available Test Accounts:</strong>
+                <p><i class="fas fa-user-shield me-1"></i> Admin: <code>admin</code> / <code>admin123</code></p>
+                <p><i class="fas fa-user me-1"></i> User: <code>user</code> / <code>user123</code></p>
+                <p><i class="fas fa-user-cog me-1"></i> Hendi: <code>hendi</code> / <code>password</code></p>
+            </div>
+        </div>
     </div>
-</form>
-</body>
+</div>
 
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
