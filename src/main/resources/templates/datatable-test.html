@@ -431,6 +431,8 @@
 <!-- DataTables -->
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     $(document).ready(function () {
@@ -464,7 +466,11 @@
                     "data": null,
                     "render": function (data, type, row) {
                         return '<div class="btn-group" role="group">' +
-                            row.updateLink + ' ' + row.deleteLink +
+                            '<a href="/update?id=' + row.id + '" class="btn btn-success">' +
+                            '<i class="fas fa-edit me-1"></i>Update</a> ' +
+                            '<button class="btn btn-danger btn-delete" data-id="' + row.id + '" ' +
+                            'data-name="' + row.firstName + ' ' + row.lastName + '">' +
+                            '<i class="fas fa-trash me-1"></i>Delete</button>' +
                             '</div>';
                     }
                 }
@@ -479,6 +485,49 @@
                 "infoEmpty": "No employees found",
                 "emptyTable": "No employees available in the system"
             }
+        });
+
+        // Handle delete button clicks with SweetAlert2
+        $('#example').on('click', '.btn-delete', function (e) {
+            e.preventDefault();
+            const employeeId = $(this).data('id');
+            const employeeName = $(this).data('name');
+
+            Swal.fire({
+                title: 'Are you sure?',
+                html: `Do you want to delete <strong>${employeeName}</strong>?<br><small>This action cannot be undone!</small>`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#667eea',
+                confirmButtonText: '<i class="fas fa-trash me-2"></i>Yes, delete it!',
+                cancelButtonText: '<i class="fas fa-times me-2"></i>Cancel',
+                customClass: {
+                    popup: 'animated fadeInDown',
+                    confirmButton: 'btn-lg',
+                    cancelButton: 'btn-lg'
+                },
+                buttonsStyling: true,
+                reverseButtons: true,
+                focusCancel: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Show loading state
+                    Swal.fire({
+                        title: 'Deleting...',
+                        html: 'Please wait while we delete the employee record.',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        showConfirmButton: false,
+                        willOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
+                    // Perform deletion
+                    window.location.href = '/delete?id=' + employeeId;
+                }
+            });
         });
     });
 </script>
