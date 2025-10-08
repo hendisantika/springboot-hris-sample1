@@ -146,7 +146,7 @@ The application includes the following main entities:
 
 - `GET /h2-console` - H2 Database console (development mode)
 
-## 🔒 Security
+## 🔒 Security & Authentication
 
 The application implements:
 
@@ -154,6 +154,18 @@ The application implements:
 - **CSRF protection** for forms
 - **Method-level security** for sensitive operations
 - **Input validation** and sanitization
+
+### Default User Credentials
+
+The application comes with pre-configured demo accounts for testing:
+
+| Username | Password | Role  | Description             |
+|----------|----------|-------|-------------------------|
+| admin    | admin123 | ADMIN | Administrator account   |
+| user     | user123  | USER  | Regular user account    |
+| hendi    | password | ADMIN | Developer admin account |
+
+**Note:** These are demo credentials for development/testing. Change them in production!
 
 ## 💻 Development Tools
 
@@ -201,12 +213,40 @@ mvn spring-boot:run
 
 ## 📱 User Interface
 
-The application features a responsive web interface built with:
+The application features a modern, responsive web interface with a professional design:
 
-- **Bootstrap 5.3.8**: Modern, mobile-first design
-- **jQuery & DataTables**: Interactive data tables
+### Login Page
+
+- Beautiful gradient background with glassmorphism effects
+- Smooth animations and transitions
+- Modern card-based design
+- Demo credentials displayed for easy testing
+- Mobile-responsive layout
+
+### Dashboard/Employee Management
+
+- Professional navigation bar with gradient styling
+- Real-time statistics cards showing:
+    - Total Employees
+    - Number of Departments
+    - Job Positions count
+    - New employees this month
+- Modern DataTables integration with:
+    - Advanced search and filtering
+    - Pagination and sorting
+    - Responsive design
+    - Smooth hover effects
+- Gradient-styled action buttons
+- Clean, professional color scheme
+
+### Technologies Used
+
+- **Bootstrap 5.3.2**: Modern, mobile-first design framework
+- **DataTables 1.13.7**: Advanced interactive tables
+- **Font Awesome 6.4.0**: Modern icon library
+- **Google Fonts (Inter)**: Professional typography
 - **Thymeleaf**: Server-side templating
-- **Font Awesome**: Icons and visual elements
+- **Custom CSS3**: Gradients, animations, and modern effects
 
 ## 🧪 Testing
 
