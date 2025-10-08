@@ -184,6 +184,42 @@ public class DataLoader {
         jdbcTemplate.execute("INSERT INTO HR_USERS (USERNAME, PASSWORD, EMAIL, FULL_NAME, ROLE, ACTIVE) VALUES ('user', 'user123', 'user@hris.com', 'Regular User', 'USER', true)");
         jdbcTemplate.execute("INSERT INTO HR_USERS (USERNAME, PASSWORD, EMAIL, FULL_NAME, ROLE, ACTIVE) VALUES ('hendi', 'password', 'hendisantika@gmail.com', 'Hendi Santika', 'ADMIN', true)");
         System.out.println("✓ Created 3 users");
+
+        // Create Regions
+        jdbcTemplate.execute("INSERT INTO regions (region_id, region_name) VALUES (1, 'Asia')");
+        jdbcTemplate.execute("INSERT INTO regions (region_id, region_name) VALUES (2, 'Europe')");
+        jdbcTemplate.execute("INSERT INTO regions (region_id, region_name) VALUES (3, 'Americas')");
+        jdbcTemplate.execute("INSERT INTO regions (region_id, region_name) VALUES (4, 'Middle East and Africa')");
+        System.out.println("✓ Created 4 regions");
+
+        // Create Countries
+        jdbcTemplate.execute("INSERT INTO countries (country_id, country_name, region_id) VALUES ('JP', 'Japan', 1)");
+        jdbcTemplate.execute("INSERT INTO countries (country_id, country_name, region_id) VALUES ('US', 'United States', 3)");
+        jdbcTemplate.execute("INSERT INTO countries (country_id, country_name, region_id) VALUES ('UK', 'United Kingdom', 2)");
+        jdbcTemplate.execute("INSERT INTO countries (country_id, country_name, region_id) VALUES ('DE', 'Germany', 2)");
+        jdbcTemplate.execute("INSERT INTO countries (country_id, country_name, region_id) VALUES ('FR', 'France', 2)");
+        jdbcTemplate.execute("INSERT INTO countries (country_id, country_name, region_id) VALUES ('CA', 'Canada', 3)");
+        jdbcTemplate.execute("INSERT INTO countries (country_id, country_name, region_id) VALUES ('AU', 'Australia', 1)");
+        jdbcTemplate.execute("INSERT INTO countries (country_id, country_name, region_id) VALUES ('IN', 'India', 1)");
+        jdbcTemplate.execute("INSERT INTO countries (country_id, country_name, region_id) VALUES ('SG', 'Singapore', 1)");
+        jdbcTemplate.execute("INSERT INTO countries (country_id, country_name, region_id) VALUES ('ID', 'Indonesia', 1)");
+        System.out.println("✓ Created 10 countries");
+
+        // Create Locations
+        jdbcTemplate.execute("INSERT INTO location (location_id, street_address, postal_code, city, state_province, country_id) VALUES (1, '1-1 Shibuya', '150-0002', 'Tokyo', 'Tokyo', 'JP')");
+        jdbcTemplate.execute("INSERT INTO location (location_id, street_address, postal_code, city, state_province, country_id) VALUES (2, '1600 Amphitheatre Parkway', '94043', 'Mountain View', 'California', 'US')");
+        jdbcTemplate.execute("INSERT INTO location (location_id, street_address, postal_code, city, state_province, country_id) VALUES (3, '1 Microsoft Way', '98052', 'Redmond', 'Washington', 'US')");
+        jdbcTemplate.execute("INSERT INTO location (location_id, street_address, postal_code, city, state_province, country_id) VALUES (4, '1 Hacker Way', '94025', 'Menlo Park', 'California', 'US')");
+        jdbcTemplate.execute("INSERT INTO location (location_id, street_address, postal_code, city, state_province, country_id) VALUES (5, '1 Infinite Loop', '95014', 'Cupertino', 'California', 'US')");
+        jdbcTemplate.execute("INSERT INTO location (location_id, street_address, postal_code, city, state_province, country_id) VALUES (6, '6 Pancras Square', 'N1C 4AG', 'London', 'Greater London', 'UK')");
+        jdbcTemplate.execute("INSERT INTO location (location_id, street_address, postal_code, city, state_province, country_id) VALUES (7, 'Erika-Mann-Strasse 33', '80636', 'Munich', 'Bavaria', 'DE')");
+        jdbcTemplate.execute("INSERT INTO location (location_id, street_address, postal_code, city, state_province, country_id) VALUES (8, '8 Rue de Londres', '75009', 'Paris', 'Île-de-France', 'FR')");
+        jdbcTemplate.execute("INSERT INTO location (location_id, street_address, postal_code, city, state_province, country_id) VALUES (9, '111 Richmond Street West', 'M5H 2G4', 'Toronto', 'Ontario', 'CA')");
+        jdbcTemplate.execute("INSERT INTO location (location_id, street_address, postal_code, city, state_province, country_id) VALUES (10, '48 Pirrama Road', '2009', 'Sydney', 'New South Wales', 'AU')");
+        jdbcTemplate.execute("INSERT INTO location (location_id, street_address, postal_code, city, state_province, country_id) VALUES (11, 'Rukan Cordoba', '110033', 'Jakarta', 'Jakarta', 'ID')");
+        jdbcTemplate.execute("INSERT INTO location (location_id, street_address, postal_code, city, state_province, country_id) VALUES (12, '70 Pasir Panjang Road', '117371', 'Singapore', 'Singapore', 'SG')");
+        jdbcTemplate.execute("INSERT INTO location (location_id, street_address, postal_code, city, state_province, country_id) VALUES (13, 'Embassy Tech Village', '560103', 'Bangalore', 'Karnataka', 'IN')");
+        System.out.println("✓ Created 13 locations");
     }
 
     private void createJob(String jobId, String jobTitle, BigDecimal minSalary, BigDecimal maxSalary) {
