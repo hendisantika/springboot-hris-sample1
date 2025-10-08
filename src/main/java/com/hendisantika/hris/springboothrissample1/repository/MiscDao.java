@@ -21,15 +21,15 @@ import java.util.List;
 @Repository
 public class MiscDao {
 
-    private static final String GET_USERS = "SELECT USERNAME, PASSWORD FROM "
-            + "hr.HR_USERS WHERE USERNAME=? AND PASSWORD=?";
+    private static final String GET_USERS = "SELECT username, password FROM "
+            + "hr_users WHERE username=? AND password=?";
 
     private static final String GET_JOBS = "SELECT JOB_ID, JOB_TITLE, MIN_SALARY, MAX_SALARY "
-            + "FROM hr.JOBS";
+            + "FROM JOBS";
 
-    private static final String GET_DEPARTMENTS = "SELECT DEPARTMENT_ID, DEPARTMENT_NAME, LOCATION_ID, MANAGER_ID FROM hr.DEPARTMENTS";
+    private static final String GET_DEPARTMENTS = "SELECT DEPARTMENT_ID, DEPARTMENT_NAME, LOCATION_ID, MANAGER_ID FROM DEPARTMENTS";
 
-    private static final String GET_JOB_BY_ID = "SELECT JOB_ID, JOB_TITLE, MIN_SALARY, MAX_SALARY FROM hr.JOBS where job_id = ?";
+    private static final String GET_JOB_BY_ID = "SELECT JOB_ID, JOB_TITLE, MIN_SALARY, MAX_SALARY FROM JOBS where job_id = ?";
 
     @Autowired
     private JdbcTemplate jdbc;

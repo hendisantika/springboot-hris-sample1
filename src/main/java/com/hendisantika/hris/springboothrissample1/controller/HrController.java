@@ -2,13 +2,17 @@ package com.hendisantika.hris.springboothrissample1.controller;
 
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
-import com.hendisantika.hris.springboothrissample1.dto.*;
+import com.hendisantika.hris.springboothrissample1.dto.DepartmentDTO;
+import com.hendisantika.hris.springboothrissample1.dto.EmployeeDTO;
+import com.hendisantika.hris.springboothrissample1.dto.JobDTO;
+import com.hendisantika.hris.springboothrissample1.dto.UserDTO;
+import com.hendisantika.hris.springboothrissample1.dto.UserSessionBean;
 import com.hendisantika.hris.springboothrissample1.model.Employee;
 import com.hendisantika.hris.springboothrissample1.model.Job;
 import com.hendisantika.hris.springboothrissample1.service.DepartmentService;
 import com.hendisantika.hris.springboothrissample1.service.EmployeeService;
 import com.hendisantika.hris.springboothrissample1.service.MiscService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,21 +35,13 @@ import java.util.List;
  * Time: 05:53
  */
 @Controller
+@RequiredArgsConstructor
 public class HrController {
-    @Autowired
-    private EmployeeService employeeService;
-
-    @Autowired
-    private MiscService misc;
-
-    @Autowired
-    private DepartmentService deptServ;
-
-    @Autowired
-    private com.hendisantika.hris.springboothrissample1.service.UserService UserService;
-
-    @Autowired
-    private UserSessionBean currentUser;
+    private final EmployeeService employeeService;
+    private final MiscService misc;
+    private final DepartmentService deptServ;
+    private final com.hendisantika.hris.springboothrissample1.service.UserService UserService;
+    private final UserSessionBean currentUser;
 
     @RequestMapping(value = "/login")
     String login(Model model) {
@@ -53,13 +49,13 @@ public class HrController {
     }
 
     @RequestMapping("/checklogin")
-    String checkLogin(@ModelAttribute("user") UserDTO current, BindingResult b, Model model) throws ParseException {
+    String checkLogin(@ModelAttribute("user") UserDTO current, BindingResult b, Model model) {
         //try to return a user dto object given the password and username
         UserDTO newDTO = UserService.getUser(current.getUsername(), current.getPassword());
         if (newDTO != null) {
             this.currentUser.setUsername(current.getUsername());
             this.currentUser.setPassword(current.getPassword());
-            return "redirect:/datatable-test"; //table
+            return "redirect:/employees";
         } else {
             return "login";
         }
@@ -73,29 +69,41 @@ public class HrController {
 
     @RequestMapping("/")
     String index(Model model) {
-        return "redirect:/datatable-test";
+        return "redirect:/employees";
     }
 
-    @RequestMapping("/datatable-test")
-    String read(Model model) {
+    @RequestMapping("/employees")
+    String employeeList(Model model) {
         return "datatable-test";
     }
 
-    @RequestMapping("/getAll")
+    @RequestMapping("/api/employees")
     @ResponseBody
     public String getAllEmployees() {
         List<EmployeeDTO> list = Lists.newArrayList();
         for (Employee e : employeeService.getAll()) {
             EmployeeDTO edto = new EmployeeDTO();
+
+            // Handle department - set to 0 if null
             if (e.getDepartment() != null) {
                 edto.setDepartmentId(e.getDepartment().getDepartmentId());
             } else {
-                edto.setDepartmentId((long) 000);
+                edto.setDepartmentId(0L);
             }
+
+            // Set basic fields
             edto.setFirstName(e.getFirstName());
             edto.setLastName(e.getLastName());
-            edto.setJobTitle(e.getJob().getJobTitle());
             edto.setId(e.getEmployeeId());
+
+            // Handle job - set to "N/A" if null
+            if (e.getJob() != null && e.getJob().getJobTitle() != null) {
+                edto.setJobTitle(e.getJob().getJobTitle());
+            } else {
+                edto.setJobTitle("N/A");
+            }
+
+            // Set action links
             edto.setDeleteLink("<a href='/delete?id=" + edto.getId() + "' "
                     + "class='btn btn-danger'>Delete</a>");
             edto.setUpdateLink("<a href='/update?id=" + edto.getId() + "' "
@@ -103,8 +111,7 @@ public class HrController {
             list.add(edto);
         }
 
-        String jsonString = new Gson().toJson(list);
-        return jsonString;
+        return new Gson().toJson(list);
     }
 
     @RequestMapping("/create-new")
@@ -146,11 +153,11 @@ public class HrController {
         toSave.setPhoneNumber(employee.getPhoneNumber());
 
         this.employeeService.saveOrUpdate(toSave);
-        return "redirect:/datatable-test";
+        return "redirect:/employees";
     }
 
     @RequestMapping("/update")
-    String update(@RequestParam("id") Long empId, Model model) throws ParseException {
+    String update(@RequestParam("id") Long empId, Model model) {
         Employee current = this.employeeService.getbyID(empId);
         EmployeeDTO emp = new EmployeeDTO();
         //populate fields
@@ -181,12 +188,12 @@ public class HrController {
 
 
     @RequestMapping("/update-save")
-    String updateSave(@ModelAttribute("employee") EmployeeDTO dto, BindingResult b, Model model) throws ParseException {
+    String updateSave(@ModelAttribute("employee") EmployeeDTO dto, BindingResult b, Model model) {
         createAndSave(dto);
-        return "datatable-test";
+        return "redirect:/employees";
     }
 
-    private void createAndSave(EmployeeDTO emp) throws ParseException {
+    private void createAndSave(EmployeeDTO emp) {
         //any fields that weren't changed will be same as the one in storage
         Employee toSave = this.employeeService.getbyID(emp.getId());
         //create job from job dto
@@ -211,7 +218,7 @@ public class HrController {
     @RequestMapping("/delete")
     String delete(@RequestParam("id") Long ID) {
         this.employeeService.deleteEmployee(ID);
-        return "redirect:/datatable-test";
+        return "redirect:/employees";
     }
 
     @RequestMapping("/logout")
