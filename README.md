@@ -99,6 +99,22 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
 mvn spring-boot:run
 ```
 
+## Image Screenshots
+
+![Login Page](img/login.png "Login Page")
+
+![List Employee](img/list_employee.png "List Employee")
+
+![Add Employee](img/Add-New-Employee.png "Add Employee")
+
+![Edit Employee](img/Update-Employee.png "Edit Employee")
+
+![Delete Employee](img/Delete-Employee.png "Delete Employee")
+
+![Jobs](img/Job-Positions.png "Jobs")
+
+![Departments](img/Departments.png "Departments")
+
 ## 🗄️ Database Schema
 
 The application includes the following main entities:

@@ -76,7 +76,7 @@ public class HrController {
 
     @GetMapping("/employees")
     String employeeList(Model model) {
-        return "datatable-test";
+        return "employees";
     }
 
     @GetMapping("/api/employees")
@@ -89,8 +89,10 @@ public class HrController {
             // Handle department - set to 0 if null
             if (e.getDepartment() != null) {
                 edto.setDepartmentId(e.getDepartment().getDepartmentId());
+                edto.setDepartmentName(e.getDepartment().getDepartmentName());
             } else {
                 edto.setDepartmentId(0L);
+                edto.setDepartmentName("N/A");
             }
 
             // Set basic fields

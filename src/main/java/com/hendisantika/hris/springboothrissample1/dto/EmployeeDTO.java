@@ -28,6 +28,7 @@ public class EmployeeDTO implements Comparable<EmployeeDTO> {
     private BigDecimal commissionPercent;
     private Long managerId;
     private Long departmentId;
+    private String departmentName;
     private String updateLink;
     private String deleteLink;
 
