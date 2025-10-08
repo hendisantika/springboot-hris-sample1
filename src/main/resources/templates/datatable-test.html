@@ -327,12 +327,12 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="/departments">
                         <i class="fas fa-building me-1"></i>Departments
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="/jobs">
                         <i class="fas fa-briefcase me-1"></i>Jobs
                     </a>
                 </li>
@@ -448,7 +448,7 @@
                     var depts = new Set();
                     var jobs = new Set();
                     data.forEach(function (emp) {
-                        if (emp.departmentID) depts.add(emp.departmentID);
+                        if (emp.departmentId) depts.add(emp.departmentId);
                         if (emp.jobTitle) jobs.add(emp.jobTitle);
                     });
                     $('#total-departments').text(depts.size);
