@@ -16,7 +16,7 @@ import lombok.Data;
  * Time: 17:25
  */
 @Entity
-@Table(name = "Countries")
+@Table(name = "COUNTRIES")
 @Data
 public class Country {
 

@@ -9,6 +9,7 @@ import com.hendisantika.hris.springboothrissample1.dto.UserDTO;
 import com.hendisantika.hris.springboothrissample1.dto.UserSessionBean;
 import com.hendisantika.hris.springboothrissample1.model.Employee;
 import com.hendisantika.hris.springboothrissample1.model.Job;
+import com.hendisantika.hris.springboothrissample1.repository.JobRepository;
 import com.hendisantika.hris.springboothrissample1.service.DepartmentService;
 import com.hendisantika.hris.springboothrissample1.service.EmployeeService;
 import com.hendisantika.hris.springboothrissample1.service.MiscService;
@@ -16,12 +17,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -42,13 +43,14 @@ public class HrController {
     private final DepartmentService deptServ;
     private final com.hendisantika.hris.springboothrissample1.service.UserService UserService;
     private final UserSessionBean currentUser;
+    private final JobRepository jobRepository;
 
-    @RequestMapping(value = "/login")
+    @GetMapping("/login")
     String login(Model model) {
         return "login";
     }
 
-    @RequestMapping("/checklogin")
+    @PostMapping("/checklogin")
     String checkLogin(@ModelAttribute("user") UserDTO current, BindingResult b, Model model) {
         //try to return a user dto object given the password and username
         UserDTO newDTO = UserService.getUser(current.getUsername(), current.getPassword());
@@ -67,17 +69,17 @@ public class HrController {
         return new UserDTO();
     }
 
-    @RequestMapping("/")
+    @GetMapping("/")
     String index(Model model) {
         return "redirect:/employees";
     }
 
-    @RequestMapping("/employees")
+    @GetMapping("/employees")
     String employeeList(Model model) {
         return "datatable-test";
     }
 
-    @RequestMapping("/api/employees")
+    @GetMapping("/api/employees")
     @ResponseBody
     public String getAllEmployees() {
         List<EmployeeDTO> list = Lists.newArrayList();
@@ -114,7 +116,7 @@ public class HrController {
         return new Gson().toJson(list);
     }
 
-    @RequestMapping("/create-new")
+    @GetMapping("/create-new")
     String create(Model model) {
         //add jobs, and departments
         List<JobDTO> j = misc.getJobs();
@@ -131,17 +133,14 @@ public class HrController {
 
     //after user enters info about new employee, data transferred here to be created
     //@ModelAttribute(employee) = th:object=${employee}
-    @RequestMapping("/create")
-    String createNew(@ModelAttribute("employee") EmployeeDTO employee, BindingResult bindingResult, Model model) throws ParseException {
+    @PostMapping("/create")
+    String createNew(@ModelAttribute("employee") EmployeeDTO employee, BindingResult bindingResult, Model model) {
 
         Employee toSave = new Employee();
-        Job j = new Job();
-        JobDTO dto = misc.getJobDTOByID(employee.getJobId());
 
-        j.setJobId(employee.getJobId());
-        j.setJobTitle(employee.getJobTitle());
-        j.setMaxSalary(dto.getMaxSalary());
-        j.setMinSalary(dto.getMinSalary());
+        // Fetch existing Job entity from database (proper relationship)
+        Job j = jobRepository.findById(employee.getJobId())
+                .orElseThrow(() -> new RuntimeException("Job not found: " + employee.getJobId()));
 
         toSave.setEmail("uzumaki_naruto@konohagakure.com");
         toSave.setHireDate(new Date());
@@ -156,7 +155,7 @@ public class HrController {
         return "redirect:/employees";
     }
 
-    @RequestMapping("/update")
+    @GetMapping("/update")
     String update(@RequestParam("id") Long empId, Model model) {
         Employee current = this.employeeService.getbyID(empId);
         EmployeeDTO emp = new EmployeeDTO();
@@ -187,7 +186,7 @@ public class HrController {
     }
 
 
-    @RequestMapping("/update-save")
+    @PostMapping("/update-save")
     String updateSave(@ModelAttribute("employee") EmployeeDTO dto, BindingResult b, Model model) {
         createAndSave(dto);
         return "redirect:/employees";
@@ -196,15 +195,12 @@ public class HrController {
     private void createAndSave(EmployeeDTO emp) {
         //any fields that weren't changed will be same as the one in storage
         Employee toSave = this.employeeService.getbyID(emp.getId());
-        //create job from job dto
-        Job j = new Job();
-        JobDTO setFrom = this.misc.getJobDTOByID(emp.getJobId());
-        j.setJobId(setFrom.getJobId());
-        j.setJobTitle(setFrom.getJobTitle());
-        j.setMaxSalary(setFrom.getMaxSalary());
-        j.setMinSalary(setFrom.getMinSalary());
 
-        //create the new employee
+        // Fetch existing Job entity from database (proper relationship)
+        Job j = jobRepository.findById(emp.getJobId())
+                .orElseThrow(() -> new RuntimeException("Job not found: " + emp.getJobId()));
+
+        //update the employee
         toSave.setFirstName(emp.getFirstName());
         toSave.setLastName(emp.getLastName());
         toSave.setPhoneNumber(emp.getPhoneNumber());
@@ -215,13 +211,13 @@ public class HrController {
     }
 
 
-    @RequestMapping("/delete")
+    @GetMapping("/delete")
     String delete(@RequestParam("id") Long ID) {
         this.employeeService.deleteEmployee(ID);
         return "redirect:/employees";
     }
 
-    @RequestMapping("/logout")
+    @GetMapping("/logout")
     String logout() {
         this.currentUser.setPassword(null);
         this.currentUser.setId(null);
