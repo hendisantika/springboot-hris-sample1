@@ -67,14 +67,14 @@
             <input class="form-control" id="salary" placeholder="Enter Salary" th:field="*{salary}" type="number"/>
         </div>
 
-        <p> Department <select name="Department" th:field="*{departmentID}">
+        <p> Department <select name="Department" th:field="*{departmentId}">
             <option th:each="department : ${departments}" th:text="${department.deptName}"
-                    th:value="${department.DepartmentID}"/>
+                    th:value="${department.departmentId}"/>
         </select>
         </p>
 
-        <p> Job Title <select name="Job Title" th:field="*{jobID}">
-            <option th:each="job : ${jobs}" th:text="${job.JobTitle}" th:value="${job.jobID}"/>
+        <p> Job Title <select name="Job Title" th:field="*{jobId}">
+            <option th:each="job : ${jobs}" th:text="${job.jobTitle}" th:value="${job.jobId}"/>
         </select>
         </p>
 
